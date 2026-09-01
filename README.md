@@ -44,6 +44,20 @@ This workflow can be adapted for:
 - Product information assistants
 - Internal knowledge base assistants
 
+- ## 📸 Workflow & Testing Screenshots
+
+### 🤖 AI Customer Support Agent Workflow
+
+![AI Customer Support Workflow](Screenshot%202026-08-31%20203936.png)
+
+### 📦 Product Return Test
+
+![Product Return Test](Screenshot%202026-09-01%20165819.png)
+
+### 🚚 Shipping Information Test
+
+![Shipping Information Test](Screenshot%202026-09-01%20170554.png)
+
 ## Author
 
 AI Automation Developer | n8n
