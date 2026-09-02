@@ -1,0 +1,238 @@
+{
+  "name": "AI Customer Support Agent with RAG Knowledge Base",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1456,
+        1040
+      ],
+      "id": "862f8806-ca38-4176-9057-bb0367325892",
+      "name": "When chat message received"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a professional AI Customer Support Agent.\n\nYour role is to provide helpful, accurate, polite, and professional customer support.\n\nRules:\n- Always understand the customer's question before answering.\n- Use the knowledge base when available to answer company-specific questions.\n- For questions about products, services, pricing, refunds, returns, shipping, policies, or troubleshooting, search the knowledge base first.\n- If the information is not available in the knowledge base, clearly say that you don't have enough information instead of making up an answer.\n- Be friendly, professional, and concise.\n- Ask follow-up questions when necessary.\n- Give clear step-by-step guidance when appropriate.\n\nYour goal is to provide an excellent customer support experience."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1472,
+        832
+      ],
+      "id": "1d860cbc-b6d8-4774-b9d7-080e4db991cb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1232,
+        1072
+      ],
+      "id": "377fb8b8-9892-496b-b1d9-aff833306ebf",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use this tool to search the customer support knowledge base for information about products, services, pricing, refunds, returns, policies, shipping, troubleshooting, and frequently asked questions. Always search this knowledge base before answering questions related to company information or customer support.",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        848
+      ],
+      "id": "197f5b11-0a36-49d2-b87a-879bc86e89ca",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        1072
+      ],
+      "id": "27ea58ee-7778-4aaa-b7dd-bb96ba4b914e",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        1072
+      ],
+      "id": "5a8e827b-26f9-4f32-844c-f57a769105b3",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        -544,
+        848
+      ],
+      "id": "8a501e1d-853b-4492-a92a-9fc0ce6aab1b",
+      "name": "Simple Vector Store1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ad0f2f4-c1b1-4ed5-9d3c-c8215f66a69f",
+              "name": "text",
+              "value": "AI CUSTOMER SUPPORT KNOWLEDGE BASE  COMPANY INFORMATION We are an online customer-focused company providing quality products and reliable customer support. Our goal is to provide customers with a smooth shopping and support experience.  SHIPPING POLICY Orders are usually processed within 1–2 business days.  Standard shipping usually takes 3–7 business days.  Delivery times may vary depending on the customer's location and external delivery conditions.  Customers will receive order and shipping information when available.  RETURN POLICY Customers may request a return within 30 days of receiving their order.  Returned products should be unused, undamaged, and returned in their original condition and packaging.  Customers should contact customer support before returning a product.  REFUND POLICY Refund requests are reviewed after the returned product is received and inspected.  Approved refunds are processed within 5–10 business days.  Refund processing time may vary depending on the customer's bank or payment provider.  If a refund request does not meet the return requirements, it may not be approved.  ORDER SUPPORT Customers should provide their order number when contacting support about an existing order.  The AI assistant can help customers with general questions about orders, shipping, returns, and refunds.  PRODUCT SUPPORT For product-related questions, customers should provide the product name and relevant details.  The support team will provide assistance based on the available information.  CUSTOMER SUPPORT Customer support is available to help with questions about products, orders, shipping, returns, refunds, and general company information.  FREQUENTLY ASKED QUESTIONS  Q: How long does shipping take? A: Standard shipping usually takes 3–7 business days after order processing.  Q: Can I return a product? A: Yes, customers may request a return within 30 days, provided the product meets the return requirements.  Q: When will I receive my refund? A: Approved refunds are generally processed within 5–10 business days after inspection.  Q: What information do I need for an order question? A: Please provide your order number and relevant details.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -720,
+        848
+      ],
+      "id": "42fec4f7-58fa-4f64-b481-4c85a3bfe612",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        1072
+      ],
+      "id": "1fc65e7a-b6f9-403c-9e19-4674055ab90b",
+      "name": "Embeddings OpenAI1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
